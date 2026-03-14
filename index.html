@@ -120,9 +120,9 @@
     }
   </style>
 
-  <!-- IMPORTANT: Load UV scripts -->
-  <script src="./uv/uv.bundle.js" defer></script>
-  <script src="./uv/uv.config.js" defer></script>
+  <!-- FIXED: Absolute paths for Ultraviolet scripts -->
+  <script src="/uv/uv.bundle.js" defer></script>
+  <script src="/uv/uv.config.js" defer></script>
 
 </head>
 
@@ -138,7 +138,7 @@
     <p class="description">Your Web. Your Rules. Optimized by Scott.</p>
     
     <form id="uv-form">
-        <input id="uv-address" type="text" class="input" placeholder="Search Google or enter a URL...">
+        <input id="uv-address" type="text" class="input" placeholder="Search Google or enter a URL..." required>
     </form>
   </div>
 
@@ -153,7 +153,6 @@
     </div>
   </div>
 
-  <!-- THE BRAIN: This makes the search actually unblock sites -->
   <script>
     window.addEventListener('load', () => {
       const form = document.getElementById('uv-form');
@@ -162,17 +161,24 @@
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         
+        // Ensure UV config is loaded
+        if (typeof __uv$config === 'undefined') {
+          alert('Engine not ready yet. Please refresh the page.');
+          return;
+        }
+
         // 1. Register the Service Worker
         try {
-          await window.navigator.serviceWorker.register('./uv/sw.js', {
+          await window.navigator.serviceWorker.register('/uv/sw.js', {
             scope: __uv$config.prefix
           });
         } catch (err) {
-          alert('Failed to register proxy engine. Make sure you are on HTTPS!');
+          alert('Proxy engine failed. Make sure you are on HTTPS (Vercel/Render)!');
           console.error(err);
+          return;
         }
 
-        // 2. Handle the URL
+        // 2. Fixed Search Logic
         let url = address.value.trim();
         if (!url.includes('.') && !url.startsWith('http')) {
           url = 'https://www.google.com' + encodeURIComponent(url);
