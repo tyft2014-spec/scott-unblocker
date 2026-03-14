@@ -1,7 +1,7 @@
 self.__uv$config = {
     prefix: '/service/',
     /* Replace '/bare/' with this public link */
-    bare: 'https://bare.benroberts.dev', 
+    bare: 'https://tomp.app', 
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/uv/uv.handler.js',
