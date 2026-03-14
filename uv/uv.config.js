@@ -1,6 +1,7 @@
 self.__uv$config = {
     prefix: '/service/',
-    bare: 'https://bare.benroberts.dev', // This makes it actually unblock
+    /* Replace '/bare/' with this public link */
+    bare: 'https://bare.benroberts.dev', 
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/uv/uv.handler.js',
